@@ -9,13 +9,13 @@
   <body>
     <article>
       <section>
-        <h1>Scaling Zopim’s frontend node servers</h1>
-        <h2>Enterprise Infrastructure and IPCluster</h2>
+        <h1>IPCluster</h1>
+        <h2>Scaling Zopim’s frontend Node.js servers</h2>
       </section>
       <section>
         <h2>Outline</h2>
         <ul>
-          <li>Scaling</li>
+          <li>Scaling lessons</li>
           <li>IPCluster</li>
         </ul>
       </section>
@@ -39,20 +39,25 @@
       <section>
         <h2>10Q4 Dashboard Rewrite</h2>
         <h3>in HTML5</h3>
+      </section>
+      <section><img src="images/dashboard_flex.png"></section>
+      <section><img src="images/dashboard_html5.jpg"></section>
+      <section>
         <h3>Node.js mediator</h3>
         <ul>
           <li>Globally distributed servers</li>
           <li>Normalizes data to realtime </li>
-          <li>A form of dynamic CDN – </li><a href="https://engineering.linkedin.com/performance/how-linkedin-used-pops-and-rum-make-dynamic-content-download-25-faster"></a>
+          <li>A form of dynamic CDN</li>
         </ul>
-      </section>
-      <section>
-        <h2>“All problems in computer science can be solved by another level of indirection”</h2>
       </section>
       <section>
         <h2>Typical NodeJS Project Lifecycle</h2>
         <h3>NodeJS starts fast out of the gate, but multi-core/-node and memory leaks can be a deal breaker</h3>
       </section>
+      <section>
+        <h2>“All problems in computer science can be solved by another level of indirection”</h2>
+      </section>
+      <section></section><img src="images/enterprise_infrastructure.png">
       <section>
         <h2>"Enterprise" Node.js Scaling</h2>
         <h3>Of SSL terminators, load balancers, firewalls and DDoS mitigation</h3>
@@ -131,11 +136,11 @@ function returnStudRemoteAddress() { return this.studRemoteAddress }
       </section>
       <section>
         <h2>Linux Netfilter</h2>
-        <pre>
-          <iptables>-A PREROUTING -s 0.0.0.0/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10080</iptables>
-          <iptables>-A PREROUTING -s 0.0.0.1/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10081</iptables>
-          <iptables>-A PREROUTING -s 0.0.0.2/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10082</iptables>
-          <iptables>-A PREROUTING -s 0.0.0.3/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10083</iptables></pre>
+        <pre><code class="language-bash">iptables -A PREROUTING -s 0.0.0.0/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10080
+iptables -A PREROUTING -s 0.0.0.1/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10081
+iptables -A PREROUTING -s 0.0.0.2/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10082
+iptables -A PREROUTING -s 0.0.0.3/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10083
+</code></pre>
       </section>
       <section>
         <h2>Remaining Issues</h2>
