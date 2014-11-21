@@ -1,0 +1,122 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title IPCluster – Scaling Zopim’s frontend node servers
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+        h1 Scaling Zopim’s frontend node servers
+        h2 Enterprise Infrastructure and IPCluster
+
+      section
+        h2 Outline
+        ul
+          li Scaling
+          li IPCluster
+
+      section
+        h2 Typical NodeJS Project Lifecycle
+        h3 NodeJS starts fast out of the gate, but multi-core/-node and memory leaks can be a deal breaker
+
+      section
+        h2 "Enterprise" NodeJS Scaling
+        h3 Of SSL terminators, load balancers, firewalls and DDoS mitigation
+
+      section
+        h2 What We Tried
+        ul
+          li cluster module
+          li HA Proxy
+          li stud
+          li nginx WebSockets
+
+      section
+        h2 Capturing client IP address
+        pre
+          code.language-javascript.
+            function attach(http_server) {
+              // cache and clean up listeners
+              var old_listeners = http_server.listeners('connection'),
+              length = old_listeners.length, self = this;
+
+              http_server.removeAllListeners('connection');
+              http_server.on('connection', function(connection) {
+                connection.on('close', clean);
+                connection.on('error', function() { connection.destroy(); clean() });
+                connection.on('data', intercept_IP);
+
+                function intercept_IP(buffer) {
+                  if (!buffer.length) return;
+
+                  var family = buffer[0], f_length = FAMILY_LENGTH[family], remoteIP;
+
+                  if (!f_length) return;
+
+                  remoteIP = Array.prototype.slice.call(buffer, 1, 1 + f_length);
+                  connection.studRemoteAddress = stringifyIP(remoteIP);
+                  connection.__defineGetter__('remoteAddress', returnStudRemoteAddress);
+                  connection.encrypted = true;
+
+                  if (buffer.length > f_length + 1)
+                    pass_through(buffer.slice(1 + f_length));
+                  else
+                    connection.on('data', pass_through);
+                }
+
+                function pass_through(residue) {
+                  clean();
+
+                  for (var i = 0; i < length; i++)
+                  old_listeners[i].call(http_server, connection);
+
+                  connection.on('error', function self(e) {
+                    connection.removeListener('error', self);
+                    console.log(e.stack);
+                  });
+
+                  connection.emit('data', residue);
+                }
+
+                function clean() { connection.removeAllListeners() }
+              });
+            }
+
+            function returnStudRemoteAddress() { return this.studRemoteAddress }
+
+      section
+        h2 Bare-metal Cluster?
+        h3 What if there was a better way?
+
+      section
+        h2 Netmask Primer
+
+      section
+        h2 Abusing Netmask Matching
+
+      section
+        h2 Introducing IPCluster
+        h3 Eschew "Enterprise” topologies, embrace a bare-metal topology
+
+      section
+        h2 IPCluster Features
+        ul
+          li Multicore
+          li Graceful restarts (limit memory usage)
+          li Soft Reload (new code without disconnecting existing clients)
+          li Bare Metal (direct access to socket, reliable ‘drain’ events)
+
+      section
+        h2 IPCluster – Future
+        h3 Track down memory leaks with automatic heap diff’ing, Management GUI
+
+      section
+        h2 That's all folks!
+
+    script(src='build/build.js')
