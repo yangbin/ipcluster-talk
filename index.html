@@ -74,7 +74,7 @@
       </section>
       <section>
         <h2>Capturing client IP address</h2>
-        <pre><code class="language-javascript">function attach(http_server) {
+        <pre class="small"><code class="language-javascript">function attach(http_server) {
   // cache and clean up listeners
   var old_listeners = http_server.listeners('connection'),
   length = old_listeners.length, self = this;
@@ -124,12 +124,43 @@
 function returnStudRemoteAddress() { return this.studRemoteAddress }
 </code></pre>
       </section>
+      <section><img src="images/dashboard_html5.jpg"></section>
       <section>
         <h2>Bare-metal Cluster?</h2>
         <h3>What if there was a better way?</h3>
       </section>
       <section>
         <h2>Netmask Primer</h2>
+        <h3>192.168.5.128/26</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Binary form</th>
+              <th>Dot-decimal notation</th>
+            </tr>
+            <tr>
+              <td>IP address</td>
+              <td>11000000.10101000.00000101.10000010</td>
+              <td>192.168.5.130</td>
+            </tr>
+            <tr>
+              <td>Subnet mask</td>
+              <td>11111111.11111111.11111111.11000000</td>
+              <td>255.255.255.192</td>
+            </tr>
+            <tr>
+              <td>Network prefix</td>
+              <td>11000000.10101000.00000101.10000000</td>
+              <td>192.168.5.128</td>
+            </tr>
+            <tr>
+              <td>Host part</td>
+              <td>00000000.00000000.00000000.00000010</td>
+              <td>0.0.0.2</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
       <section>
         <h2>Abusing Netmask Matching</h2>
