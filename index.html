@@ -20,20 +20,51 @@
         </ul>
       </section>
       <section>
+        <h2>Kwok Yang Bin</h2>
+        <ul>
+          <li>Cofounder of Zopim</li>
+        </ul>
+      </section>
+      <section>
+        <h2><img src="images/zopim-best.png"></h2>
+      </section>
+      <section>
+        <h2>Stats</h2>
+        <ul>
+          <li>150,000 sites use Zopim</li>
+          <li>3,000,000,000 impressions / month</li>
+          <li>500,000 peak concurrent connections</li>
+        </ul>
+      </section>
+      <section>
+        <h2>10Q4 Dashboard Rewrite</h2>
+        <h3>in HTML5</h3>
+        <h3>Node.js mediator</h3>
+        <ul>
+          <li>Globally distributed servers</li>
+          <li>Normalizes data to realtime </li>
+          <li>A form of dynamic CDN – </li><a href="https://engineering.linkedin.com/performance/how-linkedin-used-pops-and-rum-make-dynamic-content-download-25-faster"></a>
+        </ul>
+      </section>
+      <section>
+        <h2>“All problems in computer science can be solved by another level of indirection”</h2>
+      </section>
+      <section>
         <h2>Typical NodeJS Project Lifecycle</h2>
         <h3>NodeJS starts fast out of the gate, but multi-core/-node and memory leaks can be a deal breaker</h3>
       </section>
       <section>
-        <h2>"Enterprise" NodeJS Scaling</h2>
+        <h2>"Enterprise" Node.js Scaling</h2>
         <h3>Of SSL terminators, load balancers, firewalls and DDoS mitigation</h3>
       </section>
       <section>
         <h2>What We Tried</h2>
         <ul>
           <li>cluster module</li>
+          <li>nginx WebSockets</li>
           <li>HA Proxy</li>
           <li>stud</li>
-          <li>nginx WebSockets</li>
+          <li>Forwarding socket FDs</li>
         </ul>
       </section>
       <section>
@@ -99,6 +130,22 @@ function returnStudRemoteAddress() { return this.studRemoteAddress }
         <h2>Abusing Netmask Matching</h2>
       </section>
       <section>
+        <h2>Linux Netfilter</h2>
+        <pre>
+          <iptables>-A PREROUTING -s 0.0.0.0/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10080</iptables>
+          <iptables>-A PREROUTING -s 0.0.0.1/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10081</iptables>
+          <iptables>-A PREROUTING -s 0.0.0.2/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10082</iptables>
+          <iptables>-A PREROUTING -s 0.0.0.3/0.0.0.3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 10083</iptables></pre>
+      </section>
+      <section>
+        <h2>Remaining Issues</h2>
+        <ul>
+          <li>Memory leaks</li>
+          <li>Restarts disconnect users</li>
+          <li>Human error inserting rules</li>
+        </ul>
+      </section>
+      <section>
         <h2>Introducing IPCluster</h2>
         <h3>Eschew "Enterprise” topologies, embrace a bare-metal topology</h3>
       </section>
@@ -106,14 +153,42 @@ function returnStudRemoteAddress() { return this.studRemoteAddress }
         <h2>IPCluster Features</h2>
         <ul>
           <li>Multicore</li>
-          <li>Graceful restarts (limit memory usage)</li>
-          <li>Soft Reload (new code without disconnecting existing clients)</li>
-          <li>Bare Metal (direct access to socket, reliable ‘drain’ events)</li>
+          <li>Graceful worker retirement</li>
+          <li>Hot code reload</li>
+          <li>Bare metal</li>
+          <li>Detects and retires workers that are too_busy</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Design</h2>
+        <ul>
+          <li>Master manages workers</li>
+          <li>Workers select listening port</li>
+          <li>Communicates over UDS</li>
+          <li>Master manages iptables</li>
+          <li>Master manages masters</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Retiring Workers</h2>
+        <ul>
+          <li>Retire workings when approaching memory limit</li>
+          <li>Retire Unresponsive workers</li>
+          <li>Kill workers when approaching cluster limit</li>
         </ul>
       </section>
       <section>
         <h2>IPCluster – Future</h2>
-        <h3>Track down memory leaks with automatic heap diff’ing, Management GUI</h3>
+        <ul>
+          <li>Automatic heap diff'ing</li>
+          <li>Management GUI</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Acknowledgements</h2>
+        <ul>
+          <li></li>
+        </ul>
       </section>
       <section>
         <h2>That's all folks!</h2>
